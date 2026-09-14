@@ -80,8 +80,12 @@ generate_bindings :: (args: [] string) -> bool {
             run_result  = run_command("lipo", "-create", tprint("%.a",     lib_path_x64), tprint("%.a",     lib_path_arm64), "-output", tprint("%.a",     lib_path));
             success &&= (run_result.exit_code == 0);
         } else {
-            success &&= build_cpp_dynamic_lib(lib_path, source_file, extra = extra_args, debug = compile_debug);
-            success &&= build_cpp_static_lib(lib_path,  source_file, extra = extra_args, debug = compile_debug);
+            extra: []string;
+            #if OS == .WINDOWS {
+                extra = .["/MD"];
+            }
+            success &&= build_cpp_dynamic_lib(lib_path, source_file, extra = extra_args, debug = compile_debug, extra = extra);
+            success &&= build_cpp_static_lib(lib_path,  source_file, extra = extra_args, debug = compile_debug, extra = extra);
         }
 
         if !success     return false;
