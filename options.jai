@@ -40,6 +40,10 @@ init :: (p: *Metaprogram_Plugin, options: [] string) -> bool {
             my.instrument_modules = true;
             cursor += 1;
 
+          case "-no_instrument";
+            my.instrument = false;
+            cursor += 1;
+
           case;
             log_error("Command line for plugin Tracy: Unknown argument '%'\n", s);
             success = false;

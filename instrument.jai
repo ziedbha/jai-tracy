@@ -44,6 +44,7 @@ add_source :: (p: *Metaprogram_Plugin) {
 
 message :: (p: *Metaprogram_Plugin, message: *Message) {
     plugin := cast(*My_Plugin) p;
+    if !plugin.instrument                   return;
     if message.kind != .TYPECHECKED         return;
 
     m := cast(*Message_Typechecked) message;
@@ -149,6 +150,7 @@ My_Plugin :: struct {
     csv_output_filename: string;
     min_size := MINIMUM_SIZE_DEFAULT;
     instrument_modules := false;
+    instrument := true;
 
     //
     // The user should not mess with these:
