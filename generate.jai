@@ -91,8 +91,8 @@ generate_bindings :: (args: [] string) -> bool {
     {
         using options;
 
-        array_add(*libpaths, lib_directory);
-        array_add(*libnames, LIB_BASE_NAME);
+        array_add(*library_search_paths, lib_directory);
+        array_add(*libraries, .{filename=LIB_BASE_NAME});
         array_add(*source_files, tprint("%/public/tracy/TracyC.h", SOURCE_PATH));
         array_add(*extra_clang_arguments, "-D", "TRACY_ENABLE");
 

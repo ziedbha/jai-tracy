@@ -39,6 +39,7 @@
         #library,system,link_always "msvcprtd";
         #library,system,link_always "advapi32";
         #library,system,link_always "user32";
+        #library,system,link_always "Secur32";
     } else {
         #library,system,link_always "libpthread";
         #library,system,link_always "libdl";

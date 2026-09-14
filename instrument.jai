@@ -9,6 +9,8 @@
 get_plugin :: () -> *Metaprogram_Plugin {
     p := New(My_Plugin);  // We are making this on the heap so you could have more than one instance of this plugin running.
 
+    p.init             = init;
+
     p.before_intercept = before_intercept;
     p.add_source       = add_source;
     p.message          = message;
@@ -16,15 +18,6 @@ get_plugin :: () -> *Metaprogram_Plugin {
     p.shutdown         = shutdown;
 
     p.log_help         = log_help;
-
-    p.handle_one_option = handle_one_option;
-
-    BUFFER_SIZE :: 4096;
-    buffer: [BUFFER_SIZE] u8;
-    s := get_working_directory();  // @Cleanup: Just make this take a [] u8.
-    // Convert backslashes to forward-slashes.
-    for 0..s.count-1
-        if s[it] == #char "\\" { s[it] = #char "/"; }
 
     p.prepend_zone_node = compiler_get_nodes(PREPEND_ZONE_CODE);
     return p;
