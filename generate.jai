@@ -81,7 +81,9 @@ generate_bindings :: (args: [] string) -> bool {
             success &&= (run_result.exit_code == 0);
         } else {
             success &&= build_cpp_dynamic_lib(lib_path, source_file, extra = extra_args, debug = compile_debug);
-            success &&= build_cpp_static_lib(lib_path,  source_file, extra = extra_args, debug = compile_debug);
+            // On Windows, libtracy.lib is the DLL import library, so let's keep the static archive separate
+            static_path := ifx OS == .WINDOWS then tprint("%_static", lib_path) else lib_path;
+            success &&= build_cpp_static_lib(static_path, source_file, extra = extra_args, debug = compile_debug);
         }
 
         if !success     return false;
